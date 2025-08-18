@@ -43,14 +43,14 @@ iris = load_iris()
 X = iris.data
 # 标签（150个元素的一维数组，包含0、1、2三个值分别代表三种鸢尾花）
 y = iris.target
-#创建一个 DataFrame 对象,查看鸢尾花数据集
-df = pd.DataFrame(X, columns=iris.feature_names, index=y)
-print (df)
 #划分数据集
 X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.8, random_state=3)
 
 
 if __name__ == "__main__":
+    #创建一个 DataFrame 对象,查看鸢尾花数据集
+    df = pd.DataFrame(X, columns=iris.feature_names, index=y)
+    print (df)
     # 测试KNN预测
     y_pred = predict_by_knn(X_train, y_train, X_test, k=5)
     print(y_pred == y_test)
