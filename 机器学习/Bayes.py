@@ -2,7 +2,12 @@ from iris_test import X_train,y_train,X_test,y_test
 import numpy as np
 import pandas as pd
 
-
+'''
+贝叶斯定理是概率论中的一个重要定理，它描述了如何从主观经验或已知事实出发，
+通过收集到的样本数据（证据）来更新对事件发生概率的认知（信念）。
+朴素贝叶斯算法是基于贝叶斯定理和特征条件独立性假设的分类算法，
+该算法下假设用于分类的特征在类确定的条件下都是独立的
+'''
 def naive_bayes_fit(X, y):
     """
     :param X: 样本特征
