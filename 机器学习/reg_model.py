@@ -13,7 +13,6 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 ssl._create_default_https_context = ssl._create_unverified_context
 df = pd.read_csv('https://archive.ics.uci.edu/static/public/9/data.csv')
 
-
 # 删除指定的列
 df.drop(columns=['car_name'], inplace=True)
 # 计算相关系数矩阵
