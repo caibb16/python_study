@@ -1,13 +1,13 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
 import xgboost as xgb
+import joblib
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import classification_report
 
+
 df = pd.read_csv('Titanic_data/train.csv', index_col='PassengerId')
-df.info()
 
 # 处理缺失值
 df['Age'] = df.Age.fillna(df.Age.median())
@@ -34,27 +34,43 @@ df.drop(columns=['Name', 'SibSp', 'Parch', 'Ticket'], inplace=True)
 X, y = df.drop(columns='Survived'), df.Survived
 X_train, X_valid, y_train, y_valid = train_test_split(X, y, train_size=0.9, random_state=3)
 
-# 使用XGBoost进行训练和预测
-# 将数据处理成数据集格式DMatrix格式
-dm_train = xgb.DMatrix(X_train, y_train)
-dm_valid = xgb.DMatrix(X_valid)
-
-# 设置模型参数
-params = {
-    'booster': 'gbtree',             # 用于训练的基学习器类型
-    'objective': 'binary:logistic',  # 指定模型的损失函数
-    'gamma': 0.1,                    # 控制每次分裂的最小损失函数减少量
-    'max_depth': 10,                 # 决策树最大深度
-    'lambda': 0.5,                   # L2正则化权重
-    'subsample': 0.8,                # 控制每棵树训练时随机选取的样本比例
-    'colsample_bytree': 0.8,         # 用于控制每棵树或每个节点的特征选择比例
-    'eta': 0.05,                     # 学习率
-    'seed': 3,                       # 设置随机数生成器的种子
-    'nthread': 16,                   # 指定了训练时并行使用的线程数
+# 使用XGBClassifier和GridSearchCV进行超参数调优
+param_grid = {
+    'max_depth': [4, 6, 8, 10],
+    'learning_rate': [0.01, 0.05, 0.1],
+    'n_estimators': [100, 200, 300],
+    'subsample': [0.7, 0.8, 1.0],
+    'colsample_bytree': [0.7, 0.8, 1.0],
+    'gamma': [0, 0.1, 0.2],
+    'reg_lambda': [0.5, 1.0]
 }
 
-model = xgb.train(params, dm_train, num_boost_round=200)
-y_pred = model.predict(dm_valid)
-# 将预测的概率转换为类别标签
-y_pred_label = (y_pred > 0.5).astype('i8')
+xgb_clf = xgb.XGBClassifier(
+    objective='binary:logistic',
+    nthread=16,
+    seed=5,
+    eval_metric='logloss'
+)
+
+grid_search = GridSearchCV(
+    estimator=xgb_clf,
+    param_grid=param_grid,
+    cv=3,
+    scoring='accuracy',
+    verbose=1,
+    n_jobs=-1
+)
+
+grid_search.fit(X_train, y_train)
+print("最佳参数:", grid_search.best_params_)
+print("最佳得分:", grid_search.best_score_)
+
+# 用最佳参数模型预测验证集
+y_pred_label = grid_search.predict(X_valid)
 print(classification_report(y_valid, y_pred_label))
+
+# 保存模型
+joblib.dump(grid_search, 'best_grid_search.pkl')
+
+# 加载模型
+# grid_search = joblib.load('best_grid_search.pkl')
