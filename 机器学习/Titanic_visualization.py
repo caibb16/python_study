@@ -1,10 +1,8 @@
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
 
 df = pd.read_csv('Titanic_data/train.csv', index_col='PassengerId')
-print(df.head(5))
 
 # 修改配置添加中文字体
 plt.rcParams['font.sans-serif'].insert(0, 'SimHei')
