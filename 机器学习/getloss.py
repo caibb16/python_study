@@ -2,6 +2,10 @@ import statistics
 import random
 from knn import x,y
 
+'''
+此程序用来计算线性回归模型的损失函数，
+借以解释线型回归模型的拟合过程
+'''
 def get_loss(X_, y_, a_, b_):
     """损失函数
     :param X_: 回归模型的自变量

@@ -2,6 +2,7 @@ from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from scipy import stats
 import numpy as np
+import pandas as pd
 
 #用基础的数据科学库 NumPy 和 SciPy 来实现 kNN 算法
 
@@ -47,6 +48,9 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.8, random
 
 
 if __name__ == "__main__":
+    #创建一个 DataFrame 对象,查看鸢尾花数据集
+    df = pd.DataFrame(X, columns=iris.feature_names, index=y)
+    print (df)
     # 测试KNN预测
     y_pred = predict_by_knn(X_train, y_train, X_test, k=5)
     print(y_pred == y_test)
