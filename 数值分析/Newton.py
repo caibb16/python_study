@@ -1,5 +1,7 @@
 import numpy as np
 
+##使用牛顿迭代法求解非线性方程 f(x) = 0 的数值解
+
 def f(x):
     return np.exp(2*x) - 1- 2*x - 2*x*x
 
