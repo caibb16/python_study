@@ -1,6 +1,9 @@
 import torch as th
 import torch.nn as nn
 
+'''
+EncoderRNN类，用于将输入序列编码为隐藏状态表示。
+'''
 
 class EncoderRNN(nn.Module):
     def __init__(self, input_dim, hidden_dim, dropout_p=0):
