@@ -51,7 +51,7 @@ class DecoderRNN(nn.Module):
         return output, hidden
     
 #test
-if __name__ == "__main__":
+def test_decoder_rnn():
     encoder = EncoderRNN(input_dim=10, hidden_dim=5)  # 词表大小为10，隐藏层大小为5
     input_vector = th.tensor([[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]])
     encoder_outputs, encoder_hidden = encoder(input_vector)
@@ -61,5 +61,7 @@ if __name__ == "__main__":
     decoder_outputs, decoder_hidden, _ = decoder(encoder_outputs, encoder_hidden,target_vector)
 
     print("解码器输出的形状:", decoder_outputs.shape)  # output.shape = (batch_size, seq_len, output_dim)
+
+__all__ = ['DecoderRNN', 'test_decoder_rnn']
 
 
