@@ -9,9 +9,9 @@ from Attention import Attention
 SOS_TOKEN = 0  # Start of Sequence token
 EOS_TOKEN = 1  # End of Sequence token
 PAD_TOKEN = 2  # Padding token
-MAX_LENGTH = 10  # 最大序列长度
+MAX_LENGTH = 11  # 最大序列长度
 class AttentionDecoderRNN(nn.Module):
-    def __init__(self, output_dim, hidden_dim, dropout_p=0):
+    def __init__(self, hidden_dim, output_dim, dropout_p=0):
         super(AttentionDecoderRNN, self).__init__()
         self.embedding = nn.Embedding(output_dim, hidden_dim)
         self.attention = Attention(hidden_dim)
@@ -56,7 +56,7 @@ def test_attention_decoder_rnn():
     input_vector = th.tensor([[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]])
     encoder_outputs, encoder_hidden = encoder(input_vector)
 
-    decoder = AttentionDecoderRNN(output_dim=10, hidden_dim=5)
+    decoder = AttentionDecoderRNN(hidden_dim=5, output_dim=10)
     target_vector = th.tensor([[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]])
     decoder_outputs, decoder_hidden, attentions = decoder(encoder_outputs, encoder_hidden, target_vector)
 
