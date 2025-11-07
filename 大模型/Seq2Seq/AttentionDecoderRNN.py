@@ -47,7 +47,7 @@ class AttentionDecoderRNN(nn.Module):
         context, attn_weights = self.attention(query, encoder_outputs) # 接收到的encoder_hidden作为query，encoder_outputs作为key和value
         input_rnn = th.cat((embedded, context), dim=2)
         output, hidden = self.rnn(input_rnn, hidden)
-        output = self.out(output)
+        output = self.out(output) # 线性变换映射到输出维度，即词表大小
         return output, hidden, attn_weights
 
 #test
