@@ -35,18 +35,20 @@ class DateDataset(Dataset):
         self.index2word = {i: v for v, i in self.word2index.items()}
         # 初始化输入和目标列表
         self.input, self.target = [], []
-        # 对date_cn和date_en进行编码处理（tokenize）
+        # 对date_cn和date_en进行编码处理（tokenize），每次循环编码一个序列
         for cn_date, en_date in zip(self.date_cn, self.date_en):
             # 将日期字符串转换为索引列表，然后添加到输入和目标列表
+            # 输入序列为逐字符转换
             self.input.append([self.word2index[v] for v in cn_date])
+            # 输出序列起始为<SOS>，结束为<EOS>，中间部分逐字符转换，其中月份缩写整体（三个字符）作为一个token
             self.target.append(        # target序列长度为11，注意target序列长度应与RNN解码器的最大长度一致
                 [self.word2index["<SOS>"], ] +
                 [self.word2index[v] for v in en_date[:3]] +
-                [self.word2index[en_date[3:6]]] +   # 月份缩写整体作为一个token
+                [self.word2index[en_date[3:6]]] +   
                 [self.word2index[v] for v in en_date[6:]] +
                 [self.word2index["<EOS>"], ]
             )
-        # 将输入和目标列表转换为numpy数组
+        # 将输入和目标列表转换为numpy数组，每行为一个序列
         self.input, self.target = np.array(self.input), np.array(self.target)
 
     def __len__(self):

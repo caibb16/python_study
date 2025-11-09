@@ -4,20 +4,22 @@ from Transformer import Transformer
 from DateDataset import DateDataset
 from Transformer import pad_zero
 
-MAX_LENGTH = 11
+MAX_LENGTH = 11 # 序列最大长度
 
 # 创建一个数据集，包含1000个样本
 dataset = DateDataset(1000)
 
-# 初始化transformer模型
+# 初始化transformer模型，设置词表大小、最大序列长度、编解码器层数、嵌入维度、头数、dropout比率和填充标记的索引
 model = Transformer(n_vocab=dataset.num_words, max_len=MAX_LENGTH, n_layer=3, emb_dim=32, n_head=8, drop_rate=0.1, padding_idx=2)
 device = th.device("cuda" if th.cuda.is_available() else "cpu")
 model.to(device)
 
-# 创建一个数据记载器
+# 创建一个数据加载器，批量大小为32，每个批量数据会被打乱
 dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
+
 # 执行10个训练周期
 for epoch in range(10):
+    # 数据加载器中的每批数据，对输入和目标张量进行填充，实现每批数据形状保持一致
     for input_tensor, target_tensor, _ in dataloader:
         input_tensor = th.from_numpy(pad_zero(input_tensor,max_len=MAX_LENGTH)).long().to(device)
         target_tensor = th.from_numpy(pad_zero(target_tensor,max_len=MAX_LENGTH+1)).long().to(device)

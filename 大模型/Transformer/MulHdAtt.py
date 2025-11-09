@@ -1,6 +1,7 @@
 import torch as th
 import torch.nn as nn
 import numpy as np
+
 class MultiHeadAttention(nn.Module):
     def __init__(self, n_head, model_dim, drop_rate):
        super().__init__()
@@ -60,7 +61,7 @@ class MultiHeadAttention(nn.Module):
         self.attention = th.softmax(scores, dim=-1)
         # 计算上下文向量
         context = th.matmul(self.attention, v)
-        # 重排上下文向量的维度并进行维度合并
+        # 重排上下文向量的维度并进行维度合并，实现将多个头的输出拼接在一起
         context = context.permute(0, 2, 1, 3)
         context = context.reshape((context.shape[0], context.shape[1], -1))
         return context
