@@ -6,7 +6,7 @@ def f(x):
     return x*x*x/3 - x
 
 def f_prime(x):
-    return x*x*2 - 1
+    return x*x - 1
 
 def f_double_prime(x):
     return 4*x
