@@ -1,12 +1,12 @@
 import numpy as np
 
-##使用牛顿迭代法求解非线性方程 f(x) = 0 的数值解
+# 使用牛顿迭代法求解非线性方程 f(x) = 0 的数值解
 
 def f(x):
-    return np.exp(2*x) - 1- 2*x - 2*x*x
+    return x*x*x/3 - x
 
 def f_prime(x):
-    return np.exp(2*x) * 2 - 2 - 4*x
+    return x*x - 1
 
 x = 0.5  # 初始值
 tolerance = 1e-3  # 容差，用于控制精度
