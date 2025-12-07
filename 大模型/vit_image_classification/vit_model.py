@@ -21,7 +21,7 @@ class PatchEmbedding(nn.Module):
         # 使用卷积层将图像分割成patches并进行线性变换
         self.projection = nn.Sequential(
             nn.Conv2d(in_channels, embed_dim, kernel_size=patch_size, stride=patch_size),
-            Rearrange('b e h w -> b (h w) e'),
+            Rearrange('b e h w -> b (h w) e'),  # 重排列为 (batch_size, num_patches, embed_dim)
         )
     
     def forward(self, x):
@@ -121,6 +121,7 @@ class VisionTransformer(nn.Module):
         attention_dropout=0.1
     ):
         super().__init__()
+        # Patch Embedding层
         self.patch_embed = PatchEmbedding(img_size, patch_size, in_channels, embed_dim)
         num_patches = self.patch_embed.num_patches
         

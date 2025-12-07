@@ -257,7 +257,6 @@ def train_vit(
 
 if __name__ == "__main__":
     # 训练ViT模型
-    # 使用'tiny'模型以在4060 Laptop上获得更快的训练速度
     model, history, best_acc = train_vit(
         model_type='small',  # 可选: 'small' 或 'tiny'
         num_epochs=100,
