@@ -163,14 +163,14 @@ class VisionTransformer(nn.Module):
         
         # Transformer编码器
         for block in self.transformer_blocks:
-            x = block(x)
+            x = block(x)  # (batch_size, num_patches + 1, embed_dim)
         
         # 提取CLS token的输出用于分类
         x = self.layer_norm(x)
-        cls_token_final = x[:, 0]
+        cls_token_final = x[:, 0]  # 取出第一个token作为CLS token的输出，形状为 (batch_size, embed_dim)
         
         # 分类
-        logits = self.head(cls_token_final)
+        logits = self.head(cls_token_final)  # (batch_size, num_classes)
         
         return logits
 

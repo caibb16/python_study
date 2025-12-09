@@ -86,7 +86,7 @@ def train_epoch(model, train_loader, criterion, optimizer, device, epoch):
         
         # 统计
         running_loss += loss.item()
-        _, predicted = outputs.max(1)
+        _, predicted = outputs.max(1)  # 找到每个样本中最高概率的类别。返回的索引就是预测的类别标签
         total += targets.size(0)
         correct += predicted.eq(targets).sum().item()
         
