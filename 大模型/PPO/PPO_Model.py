@@ -40,7 +40,7 @@ class PPO:
         td_target = rewards + self.gamma * self.critic(next_states) * (1 - dones)  # td_target是在 t + 1 时刻做出的预测，包含事实成分
         td_delta = td_target - self.critic(states)  # self.critic(states)是在 t 时刻做出的预测，无事实成分，二者相减为TD误差
 
-        # 计算优势函数
+        # 计算优势函数,衡量某个动作相对于平均水平有多好。
         advantage = compute_advantage(self.gamma, self.lambda_, td_delta.cpu()).to(self.device)
         # 计算旧策略的动作概率,PPO更新过程中旧策略保持不变
         old_log_probs = th.log(self.actor(states).gather(1, actions)).detach()
