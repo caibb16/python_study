@@ -49,11 +49,11 @@ class PPO:
         for _ in range(self.epochs):
             # 计算新策略的动作概率
             log_probs = th.log(self.actor(states).gather(1, actions))
-            # 计算概率比率，用来衡量新老策略在同一动作上的偏移程度
+            # 新旧策略的概率比率
             ratio = th.exp(log_probs - old_log_probs)
 
             # 计算截断的目标函数
-            surr1 = ratio * advantage
+            surr1 = ratio * advantage  ## 如果advantage为正，则ratio越大越好；如果advantage为负，则ratio越小越好
             surr2 = th.clamp(ratio, 1 - self.eps, 1 + self.eps) * advantage  # clamp函数用于限制ratio的范围在[1-eps, 1+eps]之间
 
             # 计算Actor和Critic的损失
